@@ -23,6 +23,7 @@ $SCRIPT:White = [System.Drawing.Color]::FromArgb(255, 255, 255)
 $SCRIPT:Blue = [System.Drawing.Color]::FromArgb(82, 136, 174)
 $SCRIPT:Green = [System.Drawing.Color]::FromArgb(138, 199, 68)
 $SCRIPT:Black = [System.Drawing.Color]::FromArgb(0, 0, 0)
+# Fonts to be used within the script
 $SCRIPT:Font = New-Object System.Drawing.Font("Calibri", 16)
 
 # Set GUI Window defaults
@@ -42,7 +43,7 @@ $MainWindow.TopMost = $false
 # Add a button
 $Button = New-Object System.Windows.Forms.Button
 # What should the button say
-$Button.Text = "This is a button"
+$Button.Text = "Test Progress Bar"
 # How big should the button be (L, H)
 $Button.Size = New-Object System.Drawing.Size(100, 40)
 # Where should the button be displayed
@@ -53,7 +54,10 @@ $Button.ForeColor = $White
 $Button.Cursor = "Hand"
 # What action should happen when the button is pressed.
 $Button.Add_Click( {
-        Write-Host "Hello World"
+        $Total = 1000000
+        for ($i = 0; $i -le $Total; $i++) {
+            $ProgressBar.Value = $i / $Total * 100
+        }
     })
 
 
@@ -62,7 +66,7 @@ $RichText = New-Object System.Windows.Forms.RichTextBox
 # Set the size of the RichTextBox I have made it the size compared to the main window so if one changes it will also adapt
 $RichText.Size = New-Object System.Drawing.Size ($($MainWindow.Width - 50), $($MainWindow.Height / 4))
 # Set the location of the RichTextBox again this alters based on the MainWindow Size and the size of the RichTextBox
-$RichText.Location = New-Object System.Drawing.Point ($($MainWindow.Width - ($MainWindow.Width - 25)), $($MainWindow.Height - $($Richtext.Height + 25)))
+$RichText.Location = New-Object System.Drawing.Point ($($MainWindow.Width - ($MainWindow.Width - 25)), $($MainWindow.Height - $($Richtext.Height + 40)))
 # ReadOnly allows the users to add their own text or you can leave it so it only displays as an output
 $RichText.ReadOnly = $true
 # Show text on multiple lines
@@ -82,11 +86,33 @@ $RichText.Text = "hello World"
 # You are able to add extra text as you see fit.
 $RichText.AppendText("`nWe can do some fantastic things with this text here.")
 
+# A progress bar to see what % is complete
+$ProgressBar = New-Object System.Windows.Forms.ProgressBar
+# A fixed size on this project
+$ProgressBar.Size = New-Object System.Drawing.Size(350, 20)
+# Again position based on inital window setup
+$ProgressBar.Location = New-Object System.Drawing.Point($($MainWindow.Width - ($ProgressBar.Width + 25)), $($MainWindow.Height - $($ProgressBar.Height + 10)))
+# An example % complete, this can be updated as you run your script which will be shown with a button above
+$ProgressBar.Value = 50
+# Colour the % bar
+$ProgressBar.ForeColor = $White
+# Colour of the ProgressBar Background
+$ProgressBar.BackColor = $Blue
+# Linked to the Bottom right, so if the window is expanded it only moves with the bottom right of the window keeping its size and location
+$ProgressBar.Anchor = "Bottom, Right"
+# There are 3 styles, Blocks, Continuous and Marquee
+$ProgressBar.Style = "Continuous"
+# Show and hide the Progressbar fantastic to hide when not in use so the user doesn't feel they are waiting on anything
+$ProgressBar.Visible = $true
+
+
+
 
 
 # Add items to the MainWindow, the order matters the futher up the list it'll appear above other items
 $MainWindow.Controls.Add($Button)
 $MainWindow.Controls.Add($RichText)
+$MainWindow.Controls.Add($ProgressBar)
 
 # Display the window
 [void]$MainWindow.ShowDialog()

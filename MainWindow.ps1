@@ -39,26 +39,20 @@ $MainWindow.FormBorderStyle = "None"
 # This means that the window doesn't always appear on top so it can be used as a normal window.
 $MainWindow.TopMost = $false
 
-
-# Add a button
-$Button = New-Object System.Windows.Forms.Button
-# What should the button say
-$Button.Text = "Test Progress Bar"
-# How big should the button be (L, H)
-$Button.Size = New-Object System.Drawing.Size(100, 40)
-# Where should the button be displayed
-$Button.Location = New-Object System.Drawing.Point(7, 7)
-# What colour should the button text be
-$Button.ForeColor = $White
-# What cursor should display on hover
-$Button.Cursor = "Hand"
-# What action should happen when the button is pressed.
-$Button.Add_Click( {
-        $Total = 1000000
-        for ($i = 0; $i -le $Total; $i++) {
-            $ProgressBar.Value = $i / $Total * 100
-        }
-    })
+# Label brilliant for short structures of text such as the display for Username next to an input field, or a header, or footer comment
+$Label = New-Object System.Windows.Forms.Label
+# The text that you would like it to display
+$Label.Text = "This is a label"
+# The size of the object a little more tricky if you don't know the text
+$Label.Size = New-Object System.Drawing.Size(200, 30)
+# Set the location of the label within the window
+$Label.Location = New-Object System.Drawing.Point(7, 7)
+# Set the font colour
+$Label.ForeColor = $White
+# Set the background color
+$Label.BackColor = $MainWindowColour
+# How should the font look
+$Label.Font = $Font
 
 
 # Rich textbox fantastic for displaying data or writing data within
@@ -66,7 +60,7 @@ $RichText = New-Object System.Windows.Forms.RichTextBox
 # Set the size of the RichTextBox I have made it the size compared to the main window so if one changes it will also adapt
 $RichText.Size = New-Object System.Drawing.Size ($($MainWindow.Width - 50), $($MainWindow.Height / 4))
 # Set the location of the RichTextBox again this alters based on the MainWindow Size and the size of the RichTextBox
-$RichText.Location = New-Object System.Drawing.Point ($($MainWindow.Width - ($MainWindow.Width - 25)), $($MainWindow.Height - $($Richtext.Height + 40)))
+$RichText.Location = New-Object System.Drawing.Point ($($MainWindow.Width - ($MainWindow.Width - 25)), $($MainWindow.Height - $($RichText.Height + 40)))
 # ReadOnly allows the users to add their own text or you can leave it so it only displays as an output
 $RichText.ReadOnly = $true
 # Show text on multiple lines
@@ -85,6 +79,26 @@ $RichText.Font = $Font
 $RichText.Text = "hello World"
 # You are able to add extra text as you see fit.
 $RichText.AppendText("`nWe can do some fantastic things with this text here.")
+
+# Add a button
+$Button = New-Object System.Windows.Forms.Button
+# What should the button say
+$Button.Text = "Test Progress Bar"
+# How big should the button be (L, H)
+$Button.Size = New-Object System.Drawing.Size(100, 40)
+# Where should the button be displayed
+$Button.Location = New-Object System.Drawing.Point(25, $($MainWindow.Height - ($Button.Height + $RichText.Height + 55)))
+# What colour should the button text be
+$Button.ForeColor = $White
+# What cursor should display on hover
+$Button.Cursor = "Hand"
+# What action should happen when the button is pressed.
+$Button.Add_Click( {
+        $Total = 1000000
+        for ($i = 0; $i -le $Total; $i++) {
+            $ProgressBar.Value = $i / $Total * 100
+        }
+    })
 
 # A progress bar to see what % is complete
 $ProgressBar = New-Object System.Windows.Forms.ProgressBar
@@ -110,6 +124,7 @@ $ProgressBar.Visible = $true
 
 
 # Add items to the MainWindow, the order matters the futher up the list it'll appear above other items
+$MainWindow.Controls.Add($Label)
 $MainWindow.Controls.Add($Button)
 $MainWindow.Controls.Add($RichText)
 $MainWindow.Controls.Add($ProgressBar)
